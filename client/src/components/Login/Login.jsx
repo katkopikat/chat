@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import io from 'socket.io-client';
+import axios from 'axios';
+import socket from '../../socket';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -20,25 +21,30 @@ const useStyles = makeStyles((theme) => ({
 
   
 const Login = () => {
-  const [name, setName] = useState('');
-  const [room, setRoom] = useState('');
+  const [userName, setUserName] = useState('');
+  const [roomId, setRoomId] = useState('');
   const classes = useStyles();
 
   const startVideoChatClick = () => {
-    console.log('start video ', name, room)
+    console.log('start video ', userName, roomId)
   }
 
   const startTextChatClick = () => {
-    io('http://localhost:5000');
-    console.log('start video ', name, room)
+    if(!userName || !roomId) {
+      alert('User`s name and Room`s ID required and can`t be empty')
+    }
+    axios.post('/rooms', {
+      roomId,
+      userName
+    })
   }
 
   const handleChangeName = (value) => {
-    setName(value);
+    setUserName(value);
   }
 
   const handleChangeRoom = (value) => {
-    setRoom(value);
+    setRoomId(value);
   }
 
   return (
@@ -49,14 +55,14 @@ const Login = () => {
           id="outlined-basic"
           label="Name"
           variant="outlined"
-          value={name}
+          value={userName}
           onChange={(e) => handleChangeName(e.target.value)}
           />
           <TextField
           id="outlined-basic"
-          label="Room"
+          label="Room ID"
           variant="outlined"
-          value={room}
+          value={roomId}
           onChange={(e) => handleChangeRoom(e.target.value)}
           />
           <div className="wrapper__btns">
