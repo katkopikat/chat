@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import socket from '../../socket';
 import { makeStyles } from '@material-ui/core/styles';
@@ -57,6 +58,7 @@ const Login = () => {
           variant="outlined"
           value={userName}
           onChange={(e) => handleChangeName(e.target.value)}
+          required
           />
           <TextField
           id="outlined-basic"
@@ -64,18 +66,20 @@ const Login = () => {
           variant="outlined"
           value={roomId}
           onChange={(e) => handleChangeRoom(e.target.value)}
+          required
           />
           <div className="wrapper__btns">
-            <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            startIcon={<ChatIcon />}
-            onClick={startTextChatClick}
-            >
-            Text chat
-            </Button>
-
+          <Link to={roomId && userName ? '/room' : '/'}>
+              <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              startIcon={<ChatIcon />}
+              onClick={startTextChatClick}
+              >
+              Text chat
+              </Button>
+          </Link>
             <Button
             variant="contained"
             color="primary"
