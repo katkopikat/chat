@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import io from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -28,6 +29,7 @@ const Login = () => {
   }
 
   const startTextChatClick = () => {
+    io('http://localhost:5000');
     console.log('start video ', name, room)
   }
 
