@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
   
-const Login = () => {
+const Login = ({onLogin}) => {
   const [userName, setUserName] = useState('');
   const [roomId, setRoomId] = useState('');
   const classes = useStyles();
@@ -30,14 +30,18 @@ const Login = () => {
     console.log('start video ', userName, roomId)
   }
 
-  const startTextChatClick = () => {
+  const startTextChatClick = async () => {
     if(!userName || !roomId) {
       alert('User`s name and Room`s ID required and can`t be empty')
     }
-    axios.post('/rooms', {
+
+    const data = {
       roomId,
       userName
-    })
+    };
+
+    await axios.post('/rooms',  data)
+    onLogin(data);
   }
 
   const handleChangeName = (value) => {
@@ -69,7 +73,7 @@ const Login = () => {
           required
           />
           <div className="wrapper__btns">
-          <Link to={roomId && userName ? '/room' : '/'}>
+          {/* <Link to={roomId && userName ? '/room' : '/'}> */}
               <Button
               variant="contained"
               color="primary"
@@ -79,7 +83,7 @@ const Login = () => {
               >
               Text chat
               </Button>
-          </Link>
+          {/* </Link> */}
             <Button
             variant="contained"
             color="primary"
