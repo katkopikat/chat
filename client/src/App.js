@@ -5,26 +5,42 @@ import Login from './components/Login/Login'
 import TextChatRoom from'./components/TextChatRoom/TextChatRoom'
 import socket from './socket';
 import reducer from './reducer'
+import axios from 'axios';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, {
     isLogin: false,
     roomId: null,
     userName: null,
+    users: [],
+    messages: []
   });
 
-  const onLogin = async (data) => {
+  const setOnlineUsers = (users) => {
+    dispatch({
+      type: 'SET_ONLINE_USERS',
+      payload: users,
+    });
+  };
+
+  const onLogin = async (obj) => {
     dispatch({
       type: 'JOINED',
+      payload: obj,
+    });
+
+    socket.emit('ROOM:JOIN', obj);
+    const { data } = await axios.get(`/rooms/${obj.roomId}`);
+    dispatch({
+      type: 'SET_DATA',
       payload: data,
     });
-    socket.emit('ROOM:JOIN', data);
-  }
+  };
+
 
   useEffect(() => {
-    socket.on('ROOM:JOINED', (users) => {
-      console.log('NEW USER', users)
-    })
+    //socket.on('ROOM:JOINED', setOnlineUsers)
+    socket.on('ROOM:SET_ONLINE_USERS', setOnlineUsers);
   }, [])
 
   window.socket = socket;
@@ -33,8 +49,10 @@ const App = () => {
     <div className="App">
     <Router>
     <Switch>
-      <Route path='/' exact render={() => !state.joined && <Login onLogin={onLogin}/> } />
-      <Route path='/room' render={() => <TextChatRoom room='13'/> } />
+      <Route path='/' exact render={() => !state.joined
+                                          ? <Login onLogin={onLogin}/>
+                                          : <TextChatRoom room={state.roomId} users={state.users} /> } />
+      {/* <Route path='/room' render={() => <TextChatRoom room={state.roomId} users={state.users} /> } /> */}
       {/* <Route path='/room' component={TextChatRoom} /> */}
     </Switch>
    

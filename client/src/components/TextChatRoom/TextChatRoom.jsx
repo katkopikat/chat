@@ -19,11 +19,11 @@ const tempMsgs = [
 ]
 
 
-const TextChatRoom = () => (
+const TextChatRoom = ({ users, roomID }) => (
     <div className="wrapper__chat">
         <div className="chat__header">
-            <h3>Room 13</h3>
-            <UsersBlock />
+            <h3>Room {roomID}</h3>
+            <UsersBlock users={users}/>
         </div>
         <div className="chat-right">
             <div className="chat__messages">
