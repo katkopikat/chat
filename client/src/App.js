@@ -33,8 +33,9 @@ const App = () => {
     <div className="App">
     <Router>
     <Switch>
-      <Route path='/' exact render={() => !state.joined && <Login onLogin={onLogin}/>} />
-      <Route path='/room' component={TextChatRoom} />
+      <Route path='/' exact render={() => !state.joined && <Login onLogin={onLogin}/> } />
+      <Route path='/room' render={() => <TextChatRoom room='13'/> } />
+      {/* <Route path='/room' component={TextChatRoom} /> */}
     </Switch>
    
     </Router>

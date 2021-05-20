@@ -73,7 +73,7 @@ const Login = ({onLogin}) => {
           required
           />
           <div className="wrapper__btns">
-          {/* <Link to={roomId && userName ? '/room' : '/'}> */}
+          <Link to={roomId && userName ? '/room' : '/'}>
               <Button
               variant="contained"
               color="primary"
@@ -83,7 +83,7 @@ const Login = ({onLogin}) => {
               >
               Text chat
               </Button>
-          {/* </Link> */}
+          </Link>
             <Button
             variant="contained"
             color="primary"
