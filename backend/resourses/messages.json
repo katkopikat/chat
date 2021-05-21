@@ -1,0 +1,16 @@
+{
+    "messages": [
+      {
+        "messageId": "1",
+        "author": "Кирилл",
+        "messageText": "Привет! Всё в силе: идём на баскет сегодня?",
+        "messageTime": "13:14"
+      },
+      {
+        "messageId": "2",
+        "author": "Марк",
+        "messageText": "Да, го на площадку к 19",
+        "messageTime": "13:17"
+      }
+    ]
+  }
