@@ -21,27 +21,28 @@ const useStyles = makeStyles((theme) => ({
   }));
 
   
-const Login = ({onLogin}) => {
+const Login = ({ onLogin }) => {
   const [userName, setUserName] = useState('');
   const [roomId, setRoomId] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const classes = useStyles();
 
-  const startVideoChatClick = () => {
-    console.log('start video ', userName, roomId)
-  }
+  // const startVideoChatClick = () => {
+  //   console.log('start video ', userName, roomId)
+  // }
 
   const startTextChatClick = async () => {
     if(!userName || !roomId) {
       alert('User`s name and Room`s ID required and can`t be empty')
+    } else {
+      const obj = {
+        roomId,
+        userName
+      };
+      setLoading(true)
+      await axios.post('/rooms', obj)
+      onLogin(obj);
     }
-
-    const data = {
-      roomId,
-      userName
-    };
-
-    await axios.post('/rooms',  data)
-    onLogin(data);
   }
 
   const handleChangeName = (value) => {
@@ -75,6 +76,7 @@ const Login = ({onLogin}) => {
           <div className="wrapper__btns">
           {/* <Link to={roomId && userName ? '/room' : '/'}> */}
               <Button
+              disabled={isLoading}
               variant="contained"
               color="primary"
               className={classes.button}
@@ -84,7 +86,7 @@ const Login = ({onLogin}) => {
               Text chat
               </Button>
           {/* </Link> */}
-            <Button
+            {/* <Button
             variant="contained"
             color="primary"
             className={classes.button}
@@ -92,7 +94,7 @@ const Login = ({onLogin}) => {
             onClick={startVideoChatClick}
             >
             Video chat
-            </Button>
+            </Button> */}
           </div>
       </form>
     </div>

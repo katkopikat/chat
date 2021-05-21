@@ -1,5 +1,4 @@
 const express = require('express');
-const { map } = require('methods');
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
@@ -12,41 +11,70 @@ app.use(express.json());
 
 const rooms = new Map();
 
-app.get('/rooms', (req, res) => {
-    rooms.set('hello', '')
-    const { userName, roomId } = req.params;
-    console.log(userName, roomId)
+// app.get('/rooms/:id', (req, res) => {
+//     // const { roomId } = req.params;
 
-    res.json(rooms)
-    
-})
+//     // // const users = [...rooms.get(roomId).get('users').values()];
+//     // // const messages = [...rooms.get(roomId).get('messages').values()];
+
+//     // const chatData = rooms.has(roomId)
+//     //         ? { users: [...rooms.get(roomId).get('users').values()],
+//     //             messages : [...rooms.get(roomId).get('messages').values()]
+//     //           }
+//     //         : { users: [], messages: [] }
+
+//     // res.json(chatData);
+// });
+
+app.get('/rooms/:id', (req, res) => {
+    const { id: roomId } = req.params;
+    const obj = rooms.has(roomId)
+      ? {
+          users: [...rooms.get(roomId).get('users').values()],
+          messages: [...rooms.get(roomId).get('messages').values()],
+        }
+      : { users: [], messages: [] };
+    res.json(obj);
+  });
 
 app.post('/rooms', (req, res) => {
-    const { roomId } = req.body;
-   if(!rooms.has(roomId)) {
+   const { roomId } = req.body;
+   if (!rooms.has(roomId)) {
        rooms. set(
         roomId, 
         new Map([
             ['users', new Map()],
             ['messages', []]
         ]) 
-    )
+      )
    }
-    res.sendStatus(200);
+    res.send();
 })
 
 io.on('connection', (socket) => {
     socket.on('ROOM:JOIN', ({ roomId, userName }) => {
-        socket.join(roomId); // подключение к определённой комнате
-        rooms.get(roomId).get('users').set(socket.id, userName); //сохраняетм пользователя в "БД"
+        socket.join(roomId); 
+        //save joined user in the local BD
+        rooms.get(roomId).get('users').set(socket.id, userName); 
+        //get online users list and 
         const users = [...rooms.get(roomId).get('users').values()]; 
-        console.log('roomId', roomId);//получить всех пользователей
-        socket.broadcast.in(roomId).emit('ROOM:JOINED', users); 
+        console.log('users in room', users)
+        socket.in(roomId).emit('ROOM:SET_ONLINE_USERS', users); 
+    });
 
-        //все пользователи получат массив всех пользоватеьей в этом диалоге
+    socket.on('disconnect', () => {
+        rooms.forEach((value, roomId) => {
+          const exitUser = value.get('users').delete(socket.id);
+          //  user whos left the room
+          if (exitUser) {
+            // update online users list
+            const users = [...value.get('users').values()];
+            console.log ('users online ', users)
+            socket.in(roomId).emit('ROOM:SET_ONLINE_USERS', users);
+          }
+        });
     })
-  
-    console.log('user connected', socket.id)
+
 })
 
 const PORT = process.env.PORT || 5000;

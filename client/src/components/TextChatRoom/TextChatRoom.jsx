@@ -19,11 +19,21 @@ const tempMsgs = [
 ]
 
 
-const TextChatRoom = ({ users, roomID }) => (
+const TextChatRoom = ({ users, messages, userName, roomId }) => {
+
+    return ( 
     <div className="wrapper__chat">
         <div className="chat__header">
-            <h3>Room {roomID}</h3>
-            <UsersBlock users={users}/>
+            <h3>Room {roomId}</h3>
+            <UsersBlock users={ users }/>
+
+            {/* <div className="wrapper__users">
+            <span className="users__count">Online: {users ? users.length : 0} user(s)</span>
+            { users && users.map((user, i) =>
+                <span key={`user${i}`}> {user} </span>
+            )}
+        </div> */}
+
         </div>
         <div className="chat-right">
             <div className="chat__messages">
@@ -41,6 +51,8 @@ const TextChatRoom = ({ users, roomID }) => (
             <MessageInput />
         </div>
     </div>
-)
+    )
+}
+
 
 export default TextChatRoom;

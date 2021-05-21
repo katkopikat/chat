@@ -16,13 +16,6 @@ const App = () => {
     messages: []
   });
 
-  const setOnlineUsers = (users) => {
-    dispatch({
-      type: 'SET_ONLINE_USERS',
-      payload: users,
-    });
-  };
-
   const onLogin = async (obj) => {
     dispatch({
       type: 'JOINED',
@@ -38,25 +31,33 @@ const App = () => {
   };
 
 
+  const setOnlineUsers = (users) => {
+    dispatch({
+      type: 'SET_ONLINE_USERS',
+      payload: users,
+    });
+  };
+
   useEffect(() => {
     //socket.on('ROOM:JOINED', setOnlineUsers)
     socket.on('ROOM:SET_ONLINE_USERS', setOnlineUsers);
   }, [])
 
+  
+  useEffect(() => {
+    console.log(state)
+    console.log('state users', state.users)
+  }, [state])
+
   window.socket = socket;
 
   return (
     <div className="App">
-    <Router>
-    <Switch>
-      <Route path='/' exact render={() => !state.joined
-                                          ? <Login onLogin={onLogin}/>
-                                          : <TextChatRoom room={state.roomId} users={state.users} /> } />
-      {/* <Route path='/room' render={() => <TextChatRoom room={state.roomId} users={state.users} /> } /> */}
-      {/* <Route path='/room' component={TextChatRoom} /> */}
-    </Switch>
-   
-    </Router>
+      {
+        !state.isLogin 
+        ? <Login onLogin={onLogin}/>
+        : <TextChatRoom {...state} />
+        }
   </div>
   );
 }

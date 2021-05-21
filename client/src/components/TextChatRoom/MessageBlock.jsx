@@ -27,7 +27,7 @@ const MessageBlock = ( {author, messageText, messageTime} ) => {
     return (
         <div className="msg--left">
             <div className="msg__avatar">
-            <Avatar className={classes.purple}>{author[0]}</Avatar>
+            {/* <Avatar className={classes.purple}>{author[0]}</Avatar> */}
             </div>
             <span className="msg__time">
             {messageTime}
