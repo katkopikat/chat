@@ -30,9 +30,8 @@ const MassageInput = ( { roomId, userName, onSetMessage }) => {
             <button
             onClick={sendMessage}
             type="button">
-            Отправить
+            Send
             </button>
-
         </form>
     )
 }

@@ -9,7 +9,6 @@ const io = require('socket.io')(server, {
 
 app.use(express.json());
 
-// ---------local DB start -----------
 
 const rooms = new Map();
 
@@ -21,7 +20,6 @@ const getMessagesList = (roomsDB, roomId) => {
     return [...roomsDB.get(roomId).get('messages').values()]
 }
 
-// ---------local DB end -----------
 
 app.get('/rooms/:id', (req, res) => {
     const { id: roomId } = req.params;

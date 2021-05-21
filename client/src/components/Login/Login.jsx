@@ -3,7 +3,6 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import VideocamIcon from '@material-ui/icons/Videocam';
 import ChatIcon from '@material-ui/icons/Chat';
 
 import './Login.css';
@@ -24,10 +23,6 @@ const Login = ({ onLogin }) => {
   const [roomId, setRoomId] = useState('');
   const [isLoading, setLoading] = useState(false);
   const classes = useStyles();
-
-  // const startVideoChatClick = () => {
-  //   console.log('start video ', userName, roomId)
-  // }
 
   const startTextChatClick = async () => {
     if(!userName || !roomId) {
@@ -82,15 +77,6 @@ const Login = ({ onLogin }) => {
               >
               Text chat
               </Button>
-            {/* <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            startIcon={<VideocamIcon />}
-            onClick={startVideoChatClick}
-            >
-            Video chat
-            </Button> */}
           </div>
       </form>
     </div>

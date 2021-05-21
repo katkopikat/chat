@@ -21,11 +21,11 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const MessageBlock = ( { author, messageText, messageTime } ) => {
+const MessageBlock = ( { author, messageText, messageTime, userName } ) => {
     const classes = useStyles();
 
     return (
-        <div className="msg--left">
+        <div className={`msg ${author === userName ? 'msg--right' : 'msg--left'}`}>
             <div className="msg__avatar">
             {/* <Avatar className={classes.purple}>{author[0]}</Avatar> */}
             </div>

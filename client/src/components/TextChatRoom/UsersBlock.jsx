@@ -1,13 +1,4 @@
-// const users = ['Кирилл', 'Марк'];
-
-const UsersBlock = ( { users } ) => {
-    // console.log('users', users)
-
-    // const listUsers = users.map((user, i) =>
-    //     <span key={`user${i}`}>{user}</span>
-    // );
-
-    return (
+const UsersBlock = ( { users } ) => (
         <div className="wrapper__users">
             <span className="users__count">Online: {users.length} user(s)</span>
             { users.map((user, i) =>
@@ -15,6 +6,5 @@ const UsersBlock = ( { users } ) => {
             )}
         </div>
     )
-} 
 
 export default UsersBlock;

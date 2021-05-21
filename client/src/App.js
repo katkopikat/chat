@@ -1,4 +1,3 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useEffect, useReducer } from 'react';
 import './App.css';
 import Login from './components/Login/Login'
@@ -49,12 +48,6 @@ const App = () => {
     socket.on('ROOM:SET_ONLINE_USERS', setOnlineUsers);
     socket.on('ROOM:SET_NEW_MESSAGE', setNewMessage);
   }, [])
-
-  
-  useEffect(() => {
-    console.log(state)
-    console.log('messages', state.messages)
-  }, [state])
 
   window.socket = socket;
 
