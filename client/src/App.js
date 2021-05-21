@@ -38,15 +38,23 @@ const App = () => {
     });
   };
 
+  const setNewMessage = (msgs) => {
+    dispatch({
+      type: 'SET_NEW_MESSAGE',
+      payload: msgs,
+    });
+  };
+
   useEffect(() => {
     //socket.on('ROOM:JOINED', setOnlineUsers)
     socket.on('ROOM:SET_ONLINE_USERS', setOnlineUsers);
+    socket.on('ROOM:SET_NEW_MESSAGE', setNewMessage);
   }, [])
 
   
   useEffect(() => {
     console.log(state)
-    console.log('state users', state.users)
+    console.log('messages', state.messages)
   }, [state])
 
   window.socket = socket;
@@ -56,7 +64,7 @@ const App = () => {
       {
         !state.isLogin 
         ? <Login onLogin={onLogin}/>
-        : <TextChatRoom {...state} />
+        : <TextChatRoom {...state} setNewMessage={setNewMessage}/>
         }
   </div>
   );

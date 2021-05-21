@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import socket from '../../socket';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -74,7 +72,6 @@ const Login = ({ onLogin }) => {
           required
           />
           <div className="wrapper__btns">
-          {/* <Link to={roomId && userName ? '/room' : '/'}> */}
               <Button
               disabled={isLoading}
               variant="contained"
@@ -85,7 +82,6 @@ const Login = ({ onLogin }) => {
               >
               Text chat
               </Button>
-          {/* </Link> */}
             {/* <Button
             variant="contained"
             color="primary"

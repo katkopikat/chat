@@ -9,31 +9,31 @@ const io = require('socket.io')(server, {
 
 app.use(express.json());
 
+// ---------local DB start -----------
+
 const rooms = new Map();
 
-// app.get('/rooms/:id', (req, res) => {
-//     // const { roomId } = req.params;
+const getUsersList = (roomsDB, roomId) => {
+    return [...roomsDB.get(roomId).get('users').values()]
+}
 
-//     // // const users = [...rooms.get(roomId).get('users').values()];
-//     // // const messages = [...rooms.get(roomId).get('messages').values()];
+const getMessagesList = (roomsDB, roomId) => {
+    return [...roomsDB.get(roomId).get('messages').values()]
+}
 
-//     // const chatData = rooms.has(roomId)
-//     //         ? { users: [...rooms.get(roomId).get('users').values()],
-//     //             messages : [...rooms.get(roomId).get('messages').values()]
-//     //           }
-//     //         : { users: [], messages: [] }
-
-//     // res.json(chatData);
-// });
+// ---------local DB end -----------
 
 app.get('/rooms/:id', (req, res) => {
     const { id: roomId } = req.params;
     const obj = rooms.has(roomId)
       ? {
-          users: [...rooms.get(roomId).get('users').values()],
-          messages: [...rooms.get(roomId).get('messages').values()],
+          users: getUsersList(rooms, roomId),
+          messages: getMessagesList(rooms, roomId),
         }
-      : { users: [], messages: [] };
+      : { users: [],
+        messages: []
+    };
+
     res.json(obj);
   });
 
@@ -57,9 +57,21 @@ io.on('connection', (socket) => {
         //save joined user in the local BD
         rooms.get(roomId).get('users').set(socket.id, userName); 
         //get online users list and 
-        const users = [...rooms.get(roomId).get('users').values()]; 
-        console.log('users in room', users)
+        const users = getUsersList(rooms, roomId); 
         socket.in(roomId).emit('ROOM:SET_ONLINE_USERS', users); 
+    });
+
+    socket.on('ROOM:NEW_MESSAGE', ({ roomId, author, messageText, messageTime }) => {
+
+        const message = {
+            author,
+            messageText,
+            messageTime
+        }
+        console.elo
+
+        rooms.get(roomId).get('messages').push(message); 
+        socket.in(roomId).emit('ROOM:SET_NEW_MESSAGE', message); 
     });
 
     socket.on('disconnect', () => {
@@ -69,7 +81,6 @@ io.on('connection', (socket) => {
           if (exitUser) {
             // update online users list
             const users = [...value.get('users').values()];
-            console.log ('users online ', users)
             socket.in(roomId).emit('ROOM:SET_ONLINE_USERS', users);
           }
         });
@@ -78,6 +89,7 @@ io.on('connection', (socket) => {
 })
 
 const PORT = process.env.PORT || 5000;
+
 server.listen(PORT, (err) => {
     if(err) {
         throw Error(err);

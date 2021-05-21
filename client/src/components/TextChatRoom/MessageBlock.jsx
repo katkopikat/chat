@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const MessageBlock = ( {author, messageText, messageTime} ) => {
+const MessageBlock = ( { author, messageText, messageTime } ) => {
     const classes = useStyles();
 
     return (

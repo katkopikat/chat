@@ -17,7 +17,7 @@ const reducer = (state, action) => {
          case 'SET_NEW_MESSAGE':
             return {
                 ...state,
-                messages: [...action.payload.messages, action.payload.messages]
+                messages: [...state.messages, action.payload],
             };
         
         case 'SET_DATA':
