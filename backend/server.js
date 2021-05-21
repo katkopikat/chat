@@ -68,7 +68,6 @@ io.on('connection', (socket) => {
             messageText,
             messageTime
         }
-        console.log(message)
 
         rooms.get(roomId).get('messages').push(message); 
         socket.in(roomId).emit('ROOM:SET_NEW_MESSAGE', message); 

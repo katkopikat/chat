@@ -9,11 +9,12 @@ const MassageInput = ( { roomId, userName, onSetMessage }) => {
     }
 
     const sendMessage = () => {
+        const currentTime = new Date();
         const msg =  {
             roomId,
             author: userName,
             messageText: message,
-            messageTime: new Date().getTime()
+            messageTime: `${currentTime.getHours()}:${currentTime.getMinutes()}`
         }
         socket.emit('ROOM:SET_NEW_MESSAGE', msg);
         onSetMessage(msg);
