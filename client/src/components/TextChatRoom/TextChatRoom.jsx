@@ -4,7 +4,7 @@ import UsersBlock from './UsersBlock';
 import './TextChatRoom.css';
 
 
-const TextChatRoom = ({ users, messages, userName, roomId, setNewMessage }) => {
+const TextChatRoom = ({ users, messages, userName, roomId, onSetMessage }) => {
 
     return ( 
     <div className="wrapper__chat">
@@ -26,7 +26,7 @@ const TextChatRoom = ({ users, messages, userName, roomId, setNewMessage }) => {
                     }
                 )}
             </div>
-            <MessageInput userName={userName} roomId={roomId} setNewMessage={setNewMessage}/>
+            <MessageInput userName={userName} roomId={roomId} onSetMessage={onSetMessage}/>
         </div>
     </div>
     )

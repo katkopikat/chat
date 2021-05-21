@@ -61,14 +61,14 @@ io.on('connection', (socket) => {
         socket.in(roomId).emit('ROOM:SET_ONLINE_USERS', users); 
     });
 
-    socket.on('ROOM:NEW_MESSAGE', ({ roomId, author, messageText, messageTime }) => {
+    socket.on('ROOM:SET_NEW_MESSAGE', ({ roomId, author, messageText, messageTime }) => {
 
         const message = {
             author,
             messageText,
             messageTime
         }
-        console.elo
+        console.log(message)
 
         rooms.get(roomId).get('messages').push(message); 
         socket.in(roomId).emit('ROOM:SET_NEW_MESSAGE', message); 

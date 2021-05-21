@@ -46,7 +46,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    //socket.on('ROOM:JOINED', setOnlineUsers)
     socket.on('ROOM:SET_ONLINE_USERS', setOnlineUsers);
     socket.on('ROOM:SET_NEW_MESSAGE', setNewMessage);
   }, [])
@@ -64,7 +63,7 @@ const App = () => {
       {
         !state.isLogin 
         ? <Login onLogin={onLogin}/>
-        : <TextChatRoom {...state} setNewMessage={setNewMessage}/>
+        : <TextChatRoom {...state} onSetMessage={setNewMessage}/>
         }
   </div>
   );

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import socket from '../../socket';
 
-const MassageInput = ( { roomId, userName, setNewMessage }) => {
+const MassageInput = ( { roomId, userName, onSetMessage }) => {
     const [message, setMessage] = useState('');
 
     const handleChande = (e) => {
@@ -16,7 +16,7 @@ const MassageInput = ( { roomId, userName, setNewMessage }) => {
             messageTime: new Date().getTime()
         }
         socket.emit('ROOM:SET_NEW_MESSAGE', msg);
-        setNewMessage(msg);
+        onSetMessage(msg);
         setMessage('');
     }
 
