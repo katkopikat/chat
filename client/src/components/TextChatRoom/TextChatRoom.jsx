@@ -1,16 +1,15 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import MessageBlock from './MessageBlock';
 import MessageInput from './MessageInput';
 import UsersBlock from './UsersBlock';
 import './TextChatRoom.css';
 
-
-const TextChatRoom = ({ users, messages, userName, roomId, onSetMessage }) => {
+const TextChatRoom = ({ users, messages, userName, roomId, onSetMessage, leaveRoom }) => {
 
     const messagesRef = useRef(null);
 
     useEffect(() => {
-        console.log(messagesRef);
         messagesRef.current.scrollTo(0, 99999);
       }, [messages]);
 
@@ -20,6 +19,14 @@ const TextChatRoom = ({ users, messages, userName, roomId, onSetMessage }) => {
 
     return ( 
     <div className="wrapper__chat">
+            <Link to='/'>
+                <button
+                className="chat__leave-btn"
+                onClick={leaveRoom}
+                type="button">
+                Leave chat
+                </button>
+            </Link>
         <div className="chat__header">
             <h3
             className="chat__roomid"

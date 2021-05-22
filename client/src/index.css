@@ -8,9 +8,8 @@ body {
   background-color: #1b1b1b;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  box-sizing: border-box;
 }
 
 ::-webkit-scrollbar {

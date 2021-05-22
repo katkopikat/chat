@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ChatIcon from '@material-ui/icons/Chat';
+import { Link } from 'react-router-dom';
 
 import './Login.css';
 
@@ -67,6 +68,7 @@ const Login = ({ onLogin }) => {
           required
           />
           <div className="wrapper__btns">
+          <Link to={`/room/${roomId}`}>
               <Button
               disabled={isLoading}
               variant="contained"
@@ -77,6 +79,7 @@ const Login = ({ onLogin }) => {
               >
               Text chat
               </Button>
+            </Link>
           </div>
       </form>
     </div>

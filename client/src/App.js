@@ -1,4 +1,8 @@
 import { useEffect, useReducer } from 'react';
+import {
+  BrowserRouter as Router,
+} from 'react-router-dom';
+
 import './App.css';
 import Login from './components/Login/Login'
 import TextChatRoom from'./components/TextChatRoom/TextChatRoom'
@@ -44,6 +48,17 @@ const App = () => {
     });
   };
 
+  const leaveRoom = () => {
+    socket.disconnect();
+
+    dispatch({
+      type: 'LEAVE_ROOM',
+    });
+
+    socket.connect();
+}
+
+
   useEffect(() => {
     socket.on('ROOM:SET_ONLINE_USERS', setOnlineUsers);
     socket.on('ROOM:SET_NEW_MESSAGE', setNewMessage);
@@ -52,13 +67,15 @@ const App = () => {
   window.socket = socket;
 
   return (
+    <Router>
     <div className="App">
       {
         !state.isLogin 
         ? <Login onLogin={onLogin}/>
-        : <TextChatRoom {...state} onSetMessage={setNewMessage}/>
+        : <TextChatRoom {...state} onSetMessage={setNewMessage} leaveRoom={leaveRoom}/>
         }
   </div>
+  </Router>
   );
 }
 
