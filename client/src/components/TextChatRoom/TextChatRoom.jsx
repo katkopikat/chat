@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import MessageBlock from './MessageBlock';
 import MessageInput from './MessageInput';
 import UsersBlock from './UsersBlock';
+
+import Button from '@material-ui/core/Button';
+
 import './TextChatRoom.css';
 
 const TextChatRoom = ({ users, messages, userName, roomId, onSetMessage, leaveRoom }) => {

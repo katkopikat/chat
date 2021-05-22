@@ -126,7 +126,8 @@
 }
 
 .msg__text {
-    margin: 0.2rem;
+    margin: 0.1rem;
+    font-size: 0.9rem;
 }
 
 
@@ -142,6 +143,7 @@
     background-color: #1f1f1f;
     margin: 2rem;
     margin-top: 3rem;
+    margin-bottom: 0.5rem;
     width: 450px;
     color: white;
 }
@@ -159,4 +161,20 @@
 .msg__input button:hover {
     background: #7685ec;
     cursor: pointer;
+}
+
+.msg__input .speech__btn {
+    background: none;
+    color: white;
+    padding: 0.4rem;
+    margin: 0;
+    border: none;
+    border-radius: 5px;
+    align-self: flex-end;
+    width: 30px;
+}
+
+.msg__input .speech__btn:hover {
+    color: #dcb02a;
+    background: none;
 }

@@ -49,7 +49,7 @@ const Login = ({ onLogin }) => {
 
   return (
     <div className="login__wrapper">
-       <h1>Hey, how you doing?</h1>
+       <h1>Hey, let`s chat!</h1>
        <form className={classes.root} noValidate autoComplete="off">
           <TextField
           id="outlined-basic"
