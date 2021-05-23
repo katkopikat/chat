@@ -3,7 +3,8 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import MicNoneIcon from '@material-ui/icons/MicNone';
 import SettingsVoiceIcon from '@material-ui/icons/SettingsVoice';
 import IconButton from '@material-ui/core/Button';
-import socket from '../../socket';
+import socket from '../../../socket';
+import './MessageInput.css';
 
 const MassageInput = ( { roomId, userName, onSetMessage }) => {
     const [message, setMessage] = useState('');
@@ -34,26 +35,47 @@ const MassageInput = ( { roomId, userName, onSetMessage }) => {
     const sendMessage = () => {
       if (recordPocess) stopSpeechRecognition();
 
-      const currentTime = new Date();
-      const msg =  {
-          roomId,
-          author: userName,
-          messageText: message,
-          messageTime: `${currentTime.getHours()}:${currentTime.getMinutes()}`
+      if (message) {
+        const currentTime = new Date();
+        const msg =  {
+            roomId,
+            author: userName,
+            messageText: message,
+            messageTime: `${currentTime.getHours()}:${currentTime.getMinutes()}`
+        }
+        socket.emit('ROOM:SET_NEW_MESSAGE', msg);
+        onSetMessage(msg);
+        setMessage('');
       }
-      socket.emit('ROOM:SET_NEW_MESSAGE', msg);
-      onSetMessage(msg);
-      setMessage('');
     }
+
+    const handlePressEnter = (e) => {
+
+      if (e.keyCode === 13 && e.ctrlKey) {
+        e.preventDefault();
+        setMessage(message + "\n");
+      }
+
+      if (e.keyCode === 13 && !e.ctrlKey && message) {
+        e.preventDefault();
+        sendMessage();
+      }
+    };
 
     useEffect(() => {
       setMessage(transcript);
     }, [transcript])
+
+    useEffect(() => {
+      window.addEventListener('keydown', handlePressEnter);
+      return () => window.removeEventListener('keydown', handlePressEnter);
+    });
+  
   
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
       return null
     }
-    
+
     return (
         <form className="msg__input">
             <textarea

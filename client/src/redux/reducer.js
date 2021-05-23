@@ -16,7 +16,6 @@ const reducer = (state, action) => {
                 userName: null,
             };
 
-
         case 'SET_ONLINE_USERS':
             return {
                 ...state,
