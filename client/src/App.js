@@ -1,10 +1,17 @@
 import { useEffect, useReducer } from 'react';
-import './App.css';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Login from './components/Login/Login'
 import TextChatRoom from'./components/TextChatRoom/TextChatRoom'
 import socket from './socket';
-import reducer from './reducer'
 import axios from 'axios';
+import reducer from './redux/reducer'
+import { setOnLogin,
+         setData,
+         setUsers,
+         setMessage,
+         setUserLeaveRoom
+        } from './redux/actions';
+import './App.css';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, {
@@ -16,33 +23,21 @@ const App = () => {
   });
 
   const onLogin = async (obj) => {
-    dispatch({
-      type: 'JOINED',
-      payload: obj,
-    });
-
+    dispatch(setOnLogin(obj));
     socket.emit('ROOM:JOIN', obj);
     const { data } = await axios.get(`/rooms/${obj.roomId}`);
-    dispatch({
-      type: 'SET_DATA',
-      payload: data,
-    });
+    dispatch(setData(data));
   };
 
+  const setOnlineUsers = (users) => { dispatch(setUsers(users)) };
 
-  const setOnlineUsers = (users) => {
-    dispatch({
-      type: 'SET_ONLINE_USERS',
-      payload: users,
-    });
-  };
+  const setNewMessage = (msgs) => { dispatch(setMessage(msgs)) };
 
-  const setNewMessage = (msgs) => {
-    dispatch({
-      type: 'SET_NEW_MESSAGE',
-      payload: msgs,
-    });
-  };
+  const leaveRoom = () => {
+    socket.disconnect();
+    dispatch(setUserLeaveRoom());
+    socket.connect();
+  }
 
   useEffect(() => {
     socket.on('ROOM:SET_ONLINE_USERS', setOnlineUsers);
@@ -52,13 +47,15 @@ const App = () => {
   window.socket = socket;
 
   return (
+    <Router>
     <div className="App">
       {
         !state.isLogin 
         ? <Login onLogin={onLogin}/>
-        : <TextChatRoom {...state} onSetMessage={setNewMessage}/>
+        : <TextChatRoom {...state} onSetMessage={setNewMessage} leaveRoom={leaveRoom}/>
         }
   </div>
+  </Router>
   );
 }
 

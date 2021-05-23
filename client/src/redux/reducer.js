@@ -8,6 +8,14 @@ const reducer = (state, action) => {
                 userName: action.payload.userName,
             };
 
+        case 'LEAVE_ROOM': 
+            return {
+                ...state,
+                isLogin: false,
+                roomId: null,
+                userName: null,
+            };
+
         case 'SET_ONLINE_USERS':
             return {
                 ...state,
